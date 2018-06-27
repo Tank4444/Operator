@@ -8,14 +8,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tariff")
-public class Tariff {
+@Table(name = "number")
+public class Number {
     @Id
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment",strategy = "increment")
     private long id;
 
-    public Tariff() {
+    public Number() {
     }
 
     public long getId() {
