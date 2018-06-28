@@ -4,20 +4,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.chuikov.Operator.entity.Client;
 import ru.chuikov.Operator.service.ClientService;
+import ru.chuikov.Operator.service.TariffService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/client")
 public class ClientController {
-
+    private Client cl;
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private TariffService tariffService;
+
     @RequestMapping(value = "/getAll",method = RequestMethod.GET )
+    @ResponseBody
     public List<Client> getAllClient()
     {
-        return clientService.getAll();
+        List<Client>r=clientService.getAll();
+        return r;
     }
 
     @RequestMapping(value = "/get/{id}",method = RequestMethod.GET )
@@ -26,19 +32,40 @@ public class ClientController {
         return clientService.getById(clientId);
     }
 
-    @RequestMapping(value = "/save",method = RequestMethod.POST )
-    public Client saveClient(@RequestBody Client client)
+    @RequestMapping(value = "/save",method = RequestMethod.GET )
+    public Client saveClient(@RequestParam("id") long id,
+                             @RequestParam("fn") String fist,
+                             @RequestParam("last") String last,
+                             @RequestParam("num") String num,
+                             @RequestParam("tar") int tar
+                            )
     {
-        return clientService.save(client);
+        cl=new Client();
+        cl.setId(id);
+        cl.setFirstName(fist);
+        cl.setLastName(last);
+        cl.setNumber(num);
+        cl.setTariff(tariffService.getById(tar));
+        return clientService.save(cl);
     }
 
-    @RequestMapping(value = "/new",method = RequestMethod.POST )
-    public void create(@RequestBody Client client)
+    @RequestMapping(value = "/new",method = RequestMethod.GET )
+    public void createClienrt(@RequestParam("fn") String fist,
+                              @RequestParam("last") String last,
+                              @RequestParam("num") String num,
+                              @RequestParam("tar") int tar
+                              )
     {
-        clientService.add(client);
+        cl=new Client();
+        cl.setFirstName(fist);
+        cl.setLastName(last);
+        cl.setNumber(num);
+        cl.setTariff(tariffService.getById(tar));
+        clientService.add(cl);
     }
 
-    @RequestMapping(value = "/delete/{id}",method = RequestMethod.POST )
+
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.GET )
     public void delete(@PathVariable("id") long clientId)
     {
         clientService.remove(clientId);

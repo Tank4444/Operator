@@ -9,5 +9,5 @@ public interface ClientService {
     Client getById(long id);
     Client save(Client client);
     void remove(long id);
-    Client add(Client client);
+    void add(Client client);
 }

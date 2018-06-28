@@ -30,7 +30,7 @@ public class ClientServiceImpl implements ClientService {
         clientRepository.deleteById(id);
     }
 
-    public Client add(Client clientNew) {
-        return clientRepository.saveAndFlush(clientNew);
+    public void add(Client clientNew) {
+        clientRepository.saveAndFlush(clientNew);
     }
 }
